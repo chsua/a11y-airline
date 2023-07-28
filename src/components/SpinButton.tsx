@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState, MouseEvent, KeyboardEvent } from "react";
 import "./SpinButton.css";
 
 const SpinButton: React.FC = () => {
@@ -6,10 +6,14 @@ const SpinButton: React.FC = () => {
   const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(false);
 
   const increment = () => {
+    if (count >= 3) return alert("4인 이상은 불가합니다.");
+
     setCount((prevCount) => prevCount + 1);
   };
 
   const decrement = () => {
+    if (count <= 0) return alert("0인 이하는 불가합니다.");
+
     setCount((prevCount) => prevCount - 1);
   };
 
@@ -24,6 +28,7 @@ const SpinButton: React.FC = () => {
         <div className="spinButtonLabel">
           <label>성인</label>
           <div
+            tabIndex={0}
             className="helpIcon"
             onMouseEnter={toggleTooltip}
             onMouseLeave={toggleTooltip}
@@ -34,7 +39,11 @@ const SpinButton: React.FC = () => {
             )}
           </div>
         </div>
-        <button onClick={decrement} className="spinButton">
+        <button
+          onClick={decrement}
+          className="spinButton"
+          aria-label="성인 탑승자 한명 줄이기 버튼"
+        >
           -
         </button>
         <input
@@ -44,7 +53,11 @@ const SpinButton: React.FC = () => {
           className="spinButtonInput"
           value={count}
         />
-        <button onClick={increment} className="spinButton">
+        <button
+          onClick={increment}
+          className="spinButton"
+          aria-label="성인 탑승자 한명 늘리기 버튼"
+        >
           +
         </button>
       </div>
