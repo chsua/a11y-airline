@@ -1,24 +1,32 @@
-import React, { useState, MouseEvent, KeyboardEvent } from "react";
+import React, { useState, MouseEvent } from "react";
 import "./SpinButton.css";
+import Announcement from "./Announcement";
 
 const SpinButton: React.FC = () => {
   const [count, setCount] = useState<number>(0);
   const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(false);
+  const [message, setMessage] = useState("");
 
   const increment = () => {
     if (count >= 3) return alert("4인 이상은 불가합니다.");
 
     setCount((prevCount) => prevCount + 1);
+    setMessage(`${count}명으로 설정되었습니다.`);
   };
 
   const decrement = () => {
     if (count <= 0) return alert("0인 이하는 불가합니다.");
 
     setCount((prevCount) => prevCount - 1);
+    setMessage(`${count}명으로 설정되었습니다.`);
   };
 
   const toggleTooltip = (event: MouseEvent<HTMLDivElement>) => {
     setIsTooltipVisible(!isTooltipVisible);
+  };
+
+  const handleFocus = () => {
+    setMessage(`현재 성인승객 ${count}명`);
   };
 
   return (
@@ -51,7 +59,10 @@ const SpinButton: React.FC = () => {
           role="spinbutton"
           readOnly
           className="spinButtonInput"
+          onFocus={handleFocus}
           value={count}
+          aria-live="polite"
+          aria-readonly="true"
         />
         <button
           onClick={increment}
@@ -60,6 +71,7 @@ const SpinButton: React.FC = () => {
         >
           +
         </button>
+        <Announcement>{message}</Announcement>
       </div>
     </section>
   );
