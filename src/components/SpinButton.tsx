@@ -1,7 +1,12 @@
 import React, { useState, MouseEvent } from "react";
 import "./SpinButton.css";
+import { PERSON_TYPE } from "../constants";
 
-const SpinButton: React.FC = () => {
+const SpinButton = ({
+  personType,
+}: {
+  personType: keyof typeof PERSON_TYPE;
+}) => {
   const [count, setCount] = useState<number>(0);
   const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(false);
 
@@ -22,51 +27,48 @@ const SpinButton: React.FC = () => {
   };
 
   return (
-    <section className="spinButtonContainer">
-      <div>
-        <h1>승객 선택</h1>
-        <div className="spinButtonLabel">
-          <label>성인</label>
-          <div
-            tabIndex={0}
-            className="helpIcon"
-            onMouseEnter={toggleTooltip}
-            onMouseLeave={toggleTooltip}
-          >
-            ?
-            {isTooltipVisible && (
-              <span className="tooltip">최대 인원수는 3명까지 가능합니다</span>
-            )}
-          </div>
+    <div className="spinButtonContainer">
+      <div className="spinButtonLabel">
+        <label>{PERSON_TYPE[personType]}</label>
+        <div
+          tabIndex={0}
+          className="helpIcon"
+          onMouseEnter={toggleTooltip}
+          onMouseLeave={toggleTooltip}
+        >
+          ?
+          {isTooltipVisible && (
+            <span className="tooltip">최대 인원수는 3명까지 가능합니다</span>
+          )}
         </div>
-        <button
-          onClick={decrement}
-          className="spinButton"
-          aria-label="성인 탑승자 한명 줄이기"
-        >
-          -
-        </button>
-        <input
-          type="text"
-          role="spinbutton"
-          readOnly
-          // disabled
-          className="spinButtonInput"
-          value={count}
-          aria-label={`현재 성인승객 ${count}명`}
-          aria-disabled="true"
-          aria-live="polite"
-          aria-readonly="true"
-        />
-        <button
-          onClick={increment}
-          className="spinButton"
-          aria-label="성인 탑승자 한명 늘리기"
-        >
-          +
-        </button>
       </div>
-    </section>
+      <button
+        onClick={decrement}
+        className="spinButton"
+        aria-label={`${PERSON_TYPE[personType]} 한명 줄이기`}
+      >
+        -
+      </button>
+      <input
+        type="text"
+        role="spinbutton"
+        readOnly
+        // disabled
+        className="spinButtonInput"
+        value={count}
+        aria-label={`현재 ${PERSON_TYPE[personType]} 승객 ${count}명`}
+        aria-disabled="true"
+        aria-live="polite"
+        aria-readonly="true"
+      />
+      <button
+        onClick={increment}
+        className="spinButton"
+        aria-label={`${PERSON_TYPE[personType]} 한명 늘리기`}
+      >
+        +
+      </button>
+    </div>
   );
 };
 
